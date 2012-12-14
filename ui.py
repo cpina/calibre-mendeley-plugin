@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
+__license__   = 'GPL v3'
+__copyright__ = '2012, Carles Pina'
+
+
 from calibre.gui2.actions import InterfaceAction
-from calibre_plugins.bbcgf_ebook.main import BBCGFDialog
+from calibre_plugins.mendeley_to_calibre.main import MendeleyDialog
 
 class Mendeley(InterfaceAction):
     name = 'Mendeley Plugin'
