@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm mendeley.zip
+rm -f mendeley.zip
 zip mendeley.zip *.py
