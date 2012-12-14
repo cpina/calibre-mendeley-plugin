@@ -19,5 +19,5 @@ class Mendeley(InterfaceAction):
     def show_dialog(self):
         base_plugin_object = self.interface_action_base_plugin
 	do_user_config = base_plugin_object.do_user_config
-	d = BBCGFDialog(self.gui, self.qaction.icon(), do_user_config)
+	d = MendeleyDialog(self.gui, self.qaction.icon(), do_user_config)
 	d.show()

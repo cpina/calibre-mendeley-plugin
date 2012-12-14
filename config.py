@@ -8,7 +8,7 @@ from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton)
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
 
-from calibre_plugins.bbcgf_ebook.common_utils import (get_library_uuid, KeyboardConfigDialog, PrefsViewerDialog)
+from calibre_plugins.mendeley_to_calibre.common_utils import (get_library_uuid, KeyboardConfigDialog, PrefsViewerDialog)
 
 plugin_prefs = JSONConfig('plugins/Mendeley')
 

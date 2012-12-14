@@ -3,7 +3,7 @@
 from PyQt4.Qt import (QDialog, QGridLayout, QPushButton, QMessageBox, QLabel,
     QWidget, QVBoxLayout, QLineEdit, QIcon, QDialogButtonBox, QTimer, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator)
 
-from calibre_plugins.bbcgf_ebook.config import plugin_prefs
+from calibre_plugins.mendeley_to_calibre.config import plugin_prefs
 from calibre.utils.config import prefs as cprefs
 from calibre.ebooks.conversion.config import load_defaults
 from calibre.customize.conversion import OptionRecommendation
