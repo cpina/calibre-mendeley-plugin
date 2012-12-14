@@ -24,11 +24,29 @@ class MendeleyDialog(QDialog):
 	self.setWindowTitle('Mendeley Plugin')
 	self.setWindowIcon(icon)
 
-	self.helpl = QLabel('Enter the URL of a bbcgoodfood.com recipe below.')
+	self.helpl = QLabel('You will import the library:')
 	self.l.addWidget(self.helpl)
 
-       self.setMinimumWidth(500)
-       self.resize(self.sizeHint())
+        self.setMinimumWidth(500)
+        self.resize(self.sizeHint())
+
+	self.startImportButton = QPushButton('Start Import')
+	self.startImportButton.clicked.connect(self.startImport)
+	self.l.addWidget(self.startImportButton)
+
+    def startImport(self):
+        file_name = '/home/carles/turing.pdf'
+        self.gui.iactions['Add Books']._add_books([file_name], False)
+	self.db = self.gui.current_db
+	from calibre.ebooks.metadata import MetaInformation
+	mi = MetaInformation('', [_('Unknown')])
+	mi.title='here it is!'
+	mi.authors = ['this is the author']
+	mi.series_index = 1
+	print mi
+	self.db.add_books([file_name], ['pdf'], [mi])
+	print "=============",self.db
+
 
     def about(self):
         QMessageBox.about(self, 'About', 'Some text here')

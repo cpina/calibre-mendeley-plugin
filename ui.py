@@ -10,11 +10,14 @@ from calibre_plugins.mendeley_to_calibre.main import MendeleyDialog
 class Mendeley(InterfaceAction):
     name = 'Mendeley Plugin'
 
-    action_spec = ('this is some text', None, 'this is some other text', ())
+    action_spec = ('This is some text', None, 'This is some other text', ())
 
     def genesis(self):
         print 'Genesis is called'
-        pass
+	icon = get_icons('images/mendeley.png')
+	self.qaction.setIcon(icon)
+	self.qaction.triggered.connect(self.show_dialog)
+	print 'End of genesis'
 
     def show_dialog(self):
         base_plugin_object = self.interface_action_base_plugin

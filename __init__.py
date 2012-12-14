@@ -13,7 +13,7 @@ class MendeleyPlugin(InterfaceActionBase):
     #: This field defines the GUI plugin class that contains all the code
     #: that actually does something. Its format is module_path:class_name
     #: The specified class must be defined in the specified module.
-    actual_plugin = 'calibre_plugins.mendeley_to_calibre:Mendeley'
+    actual_plugin = 'calibre_plugins.mendeley_to_calibre.ui:Mendeley'
 
     def is_customizable(self):
         return True
