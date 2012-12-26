@@ -10,7 +10,7 @@ from calibre_plugins.mendeley_to_calibre.main import MendeleyDialog
 class Mendeley(InterfaceAction):
     name = 'Mendeley Plugin'
 
-    action_spec = ('This is some text', None, 'This is some other text', ())
+    action_spec = ('Import from Mendeley', None, 'Import from Mendeley', ())
 
     def genesis(self):
         print 'Genesis is called'

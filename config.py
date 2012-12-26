@@ -5,7 +5,7 @@ from __future__ import (unicode_literals, division, absolute_import, print_funct
 __license__   = 'GPL v3'
 __copyright__ = '2012, Carles Pina'
 
-from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton)
+from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdit)
 
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
@@ -22,12 +22,10 @@ class ConfigWidget(QWidget):
 	self.l = QVBoxLayout()
 	self.setLayout(self.l)
 
-	self.cb_widget = QCheckBox('Test test.', self)
-	self.l.addWidget(self.cb_widget)
+	self.api_key = QLineEdit(self)
+	self.l.addWidget(self.api_key)
+
+	self.api_key.setText(plugin_prefs['api_key'])
 
     def save_settings(self):
-        plugin_prefs['hidedldlg'] = self.cb_widget.isChecked()
-
-    def edit(self):
-        print("Edit")
-        pass
+        plugin_prefs['api_key'] = str(self.api_key.text())

@@ -34,19 +34,27 @@ class MendeleyDialog(QDialog):
 	self.startImportButton.clicked.connect(self.startImport)
 	self.l.addWidget(self.startImportButton)
 
-    def startImport(self):
-        file_name = '/home/carles/turing.pdf'
-        self.gui.iactions['Add Books']._add_books([file_name], False)
-	self.db = self.gui.current_db
+    def add_document(self,document):
 	from calibre.ebooks.metadata import MetaInformation
-	mi = MetaInformation('', [_('Unknown')])
-	mi.title='here it is!'
-	mi.authors = ['this is the author']
-	mi.series_index = 1
-	print mi
-	self.db.add_books([file_name], ['pdf'], [mi])
-	print "=============",self.db
 
+	mi = MetaInformation('', [_('Unknown')])
+	mi.title = document['title']
+	mi.authors = document['authors']
+	mi.series_index = 1 # needed?
+
+        self.db.add_books([document['path']], ['pdf'], [mi])
+
+    def startImport(self):
+        import sys
+	sys.path.append('/home/carles/mendeley_oapi')
+	import fetch
+
+	documents = fetch.get_mendeley_documents()
+
+        for document in documents:
+	    self.add_document(document)
+
+	self.close()
 
     def about(self):
         QMessageBox.about(self, 'About', 'Some text here')
