@@ -10,6 +10,9 @@ from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdi
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
 
+from mendeley_oapi import fetch
+from mendeley_oapi import mendeley_client
+
 # from calibre_plugins.mendeley_to_calibre.common_utils import (get_library_uuid, KeyboardConfigDialog, PrefsViewerDialog)
 
 plugin_prefs = JSONConfig('plugins/Mendeley')
@@ -22,7 +25,12 @@ class ConfigWidget(QWidget):
 	self.layout = QFormLayout()
 	self.label = QLabel()
 	self.label.setOpenExternalLinks(True)
-	self.label.setText('<a href="http://www.mendeley.com">Press Here</a>')
+	
+	oapiConfig = OapiConfig()
+        oapi = fetch.MendeleyOapi(oapiConfig)
+	url = oapi.getVerificationUrl()
+
+	self.label.setText('<a href="http://%s">Press Here</a>' % url)
 	self.setLayout(self.layout)
 
 	self.api_key = QLineEdit(self)
