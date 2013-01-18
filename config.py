@@ -10,15 +10,21 @@ from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdi
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
 
-from mendeley_oapi import fetch
-from mendeley_oapi import mendeley_client
-
 # from calibre_plugins.mendeley_to_calibre.common_utils import (get_library_uuid, KeyboardConfigDialog, PrefsViewerDialog)
 
 plugin_prefs = JSONConfig('plugins/Mendeley')
 
+class OapiConfig:
+    def __init__(self):
+        setattr(self,'api_key', 'c168ce62964a4900e66d9361bda9cb3a04cf98732')
+	setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
+	setattr(self,'host', 'api.mendeley.com')
+
 class ConfigWidget(QWidget):
     def __init__(self, plugin_action):
+        from mendeley_oapi import fetch
+        from mendeley_oapi import mendeley_client
+
         QWidget.__init__(self)
 	self.plugin_action = plugin_action
 
