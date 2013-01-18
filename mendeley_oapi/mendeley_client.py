@@ -240,8 +240,8 @@ class MendeleyAccount:
         self.access_token = access_token
 
 class MendeleyTokensStore:
-
     def __init__(self, filename='mendeley_api_keys.pkl'):
+        print "MendeleyTokensStore __init__"
         self.filename = filename
         self.accounts = {}
 
@@ -249,13 +249,16 @@ class MendeleyTokensStore:
             self.load()
 
     def __del__(self):
+        print "MendeleyTokensStore __del__"
         if self.filename:
             self.save()
 
     def add_account(self, key, access_token):
+        print "MendeleyTokensStore add_account"
         self.accounts[key] = MendeleyAccount(access_token)
 
     def get_account(self, key):
+        print "MendeleyTokensStore get_account"
         return self.accounts.get(key, None)
 
     def get_access_token(self, key):
@@ -269,15 +272,20 @@ class MendeleyTokensStore:
         del self.accounts[key]
 
     def save(self):
+        print "MendeleyTokensStore save"
         if not self.filename:
             raise Exception("Need to specify a filename for this store")
+	print "------- self:",self.filename
+	print self.accounts
         pickle.dump(self.accounts, open(self.filename, 'w'))
 
     def load(self):
+        print "MendeleyTokensStore load"
         if not self.filename:
             raise Exception("Need to specify a filename for this store")
         try:
             self.accounts = pickle.load(open(self.filename, 'r'))
+	    print "accounts:",self.accounts
         except IOError:
             print "Can't load tokens from %s"%self.filename
 

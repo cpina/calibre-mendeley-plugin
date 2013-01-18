@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from mendeley_oapi import fetch
+from mendeley_oapi import mendeley_client
 import sys
 from pprint import pprint
 
@@ -23,6 +24,12 @@ else:
     print "URL:",oapi.getVerificationUrl()
     verification = raw_input('write verification')
     oapi.setVerificationCode(verification)
+    
+    tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
+    tokens_store.add_account('test_account',oapi.mendeley.get_access_token())
+    tokens_store = 0
+    print "Here"
+
 
 documents = oapi.get_mendeley_documents()
 pprint(documents)
