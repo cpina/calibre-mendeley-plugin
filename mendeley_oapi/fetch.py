@@ -13,7 +13,6 @@ class OapiConfig:
 
 class MendeleyOapi(object):
     def __init__(self, config):
-        print "====================="
 	self.config = config
         self.mendeley = create_client(config)
 
@@ -22,8 +21,6 @@ class MendeleyOapi(object):
 	return self.mendeley.interactive_auth_url()
 
     def setVerificationCode(self, code):
-        print "Code", code 
-        # self.mendeley.set_access_token(code)
         self.mendeley.interactive_set_access_token(code)
 
     def isValid(self):
@@ -40,6 +37,8 @@ class MendeleyOapi(object):
         a = ''
     
         for author in authors:
+	    if a != '':
+	        a += " || "
             a += author['surname'] + ', ' + author['forename']
     
         return a
@@ -52,7 +51,7 @@ class MendeleyOapi(object):
             path = '/tmp/' + file_hash + '.pdf'
             file_content = self.mendeley.download_file(document_id, file_hash)
 	    f=open(path, 'w')
-	    f.write(str(file_content))
+	    f.write(file_content['data'])
 	    f.close()
     
 	    return path

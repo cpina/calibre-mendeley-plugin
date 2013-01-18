@@ -40,6 +40,12 @@ class MendeleyDialog(QDialog):
 	mi = MetaInformation('', [_('Unknown')])
 	mi.title = document['title']
 	mi.authors = document['authors']
+	print("AUTHORS:")
+	print(mi.authors)
+	print(type(mi.authors))
+	print("TITLE:")
+	print(mi.title)
+	print(type(mi.title))
 	mi.series_index = 1 # needed?
 
         self.db.add_books([document['path']], ['pdf'], [mi])
