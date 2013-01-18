@@ -5,6 +5,11 @@ from mendeley_client import *
 import os
 import sys
 
+class OapiConfig:
+    def __init__(self):
+        setattr(self,'api_key', 'c168ce62964a4900e66d9361bda9cb3a04cf98732')
+	setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
+	setattr(self,'host', 'api.mendeley.com')
 
 class MendeleyOapi(object):
     def __init__(self, config):
@@ -14,7 +19,7 @@ class MendeleyOapi(object):
 
     def getVerificationUrl(self):
         self.mendeley = MendeleyClient(self.config.api_key, self.config.api_secret)
-	print "URL:",self.mendeley.interactive_auth_url()
+	return self.mendeley.interactive_auth_url()
 
     def setVerificationCode(self, code):
         print "Code", code 

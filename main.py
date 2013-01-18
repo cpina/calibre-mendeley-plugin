@@ -58,10 +58,12 @@ class MendeleyDialog(QDialog):
         print "--- startImport 06"
 	pprint(plugin_prefs)
         print "--- startImport 07"
-	from mendeley_oapi import fetch
-	# sys.path.append('/home/carles/hackday_calibre/mendeley_oapi')
+	from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
 
-	documents = fetch.get_mendeley_documents()
+	oapiConfig = fetch.OapiConfig()
+	
+        oapi = fetch.MendeleyOapi(oapiConfig)
+	documents = oapi.get_mendeley_documents()
 
         for document in documents:
 	    self.add_document(document)

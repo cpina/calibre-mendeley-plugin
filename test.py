@@ -23,6 +23,7 @@ if oapi.isValid():
 else:
     print "URL:",oapi.getVerificationUrl()
     verification = raw_input('write verification')
+    verification = str(verification)
     oapi.setVerificationCode(verification)
     
     tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')

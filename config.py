@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import (unicode_literals, division, absolute_import, print_function)
+from __future__ import (division, absolute_import, print_function)
 
 __license__   = 'GPL v3'
 __copyright__ = '2012, 2013, Carles Pina'
@@ -22,8 +22,8 @@ class OapiConfig:
 
 class ConfigWidget(QWidget):
     def __init__(self, plugin_action):
-        from mendeley_oapi import fetch
-        from mendeley_oapi import mendeley_client
+        from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
+        from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
 
         QWidget.__init__(self)
 	self.plugin_action = plugin_action
@@ -33,10 +33,12 @@ class ConfigWidget(QWidget):
 	self.label.setOpenExternalLinks(True)
 	
 	oapiConfig = OapiConfig()
-        oapi = fetch.MendeleyOapi(oapiConfig)
-	url = oapi.getVerificationUrl()
+        self.oapi = fetch.MendeleyOapi(oapiConfig)
+	self.oapi.isValid()
+	url = self.oapi.getVerificationUrl()
+	link = '<a href="%s">Press Here</a>' % (url)
 
-	self.label.setText('<a href="http://%s">Press Here</a>' % url)
+	self.label.setText(link)
 	self.setLayout(self.layout)
 
 	self.api_key = QLineEdit(self)
@@ -46,4 +48,11 @@ class ConfigWidget(QWidget):
 	self.api_key.setText(plugin_prefs['api_key'])
 
     def save_settings(self):
-        plugin_prefs['api_key'] = str(self.api_key.text())
+        from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
+        print("SAVE SETTINGS",str(self.api_key.text()))
+        plugin_prefs['verification'] = str(self.api_key.text())
+	self.oapi.setVerificationCode(str(self.api_key.text()))
+	tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
+	tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
+	tokens_store = 0 # force delete
+	print("Here")
