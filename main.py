@@ -45,7 +45,19 @@ class MendeleyDialog(QDialog):
         self.db.add_books([document['path']], ['pdf'], [mi])
 
     def startImport(self):
+        print "--- startImport 01"
         import sys
+        print "--- startImport 02"
+        print "--- startImport 03"
+	from calibre.utils.config import JSONConfig
+        print "--- startImport 04"
+	from pprint import pprint
+        print "--- startImport 05"
+
+	plugin_prefs = JSONConfig('plugins/Mendeley')
+        print "--- startImport 06"
+	pprint(plugin_prefs)
+        print "--- startImport 07"
 	from mendeley_oapi import fetch
 	# sys.path.append('/home/carles/hackday_calibre/mendeley_oapi')
 

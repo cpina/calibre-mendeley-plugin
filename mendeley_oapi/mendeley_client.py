@@ -374,7 +374,7 @@ class MendeleyClient(object):
 	return self.auth_url
 
     def interactive_set_access_token(self, verifier):
-        self.set_access_token(self.verif_auth(self.request_token, verifier))
+        self.set_access_token(self.verify_auth(self.request_token, verifier))
 
     def interactive_auth(self):
         request_token, auth_url = self.get_auth_url()
@@ -382,20 +382,14 @@ class MendeleyClient(object):
         verifier = raw_input('Enter verification code: ')
         self.set_access_token(self.verify_auth(request_token, verifier))
 
-def create_client(config_file="config.json", keys_file=None, account_name="test_account"):
-    # Load the configuration file
-    config = MendeleyClientConfig(config_file)
-    if not config.is_valid():
-        print "Please edit config.json before running this script"
-        sys.exit(1)
-
+def create_client(config, keys_file=None, account_name="test_account"):
     # create a client and load tokens from the pkl file
     host = "api.mendeley.com"
     if hasattr(config, "host"):
         host = config.host
 
     if not keys_file:
-        keys_file = "keys_%s.pkl"%host
+        keys_file = "/tmp/keys_%s.pkl"%host
 
     client = MendeleyClient(config.api_key, config.api_secret, {"host":host})
     tokens_store = MendeleyTokensStore(keys_file)
@@ -404,12 +398,13 @@ def create_client(config_file="config.json", keys_file=None, account_name="test_
     # if no tokens are available, prompt the user to authenticate
     access_token = tokens_store.get_access_token(account_name)
     if not access_token:
-        try:
-            client.interactive_auth()
-            tokens_store.add_account(account_name,client.get_access_token())
-        except Exception as e:
-            print e
-            sys.exit(1)
+        return None
+        #try:
+            #client.interactive_auth()
+            #tokens_store.add_account(account_name,client.get_access_token())
+        #except Exception as e:
+            #print e
+            #sys.exit(1)
     else:
         client.set_access_token(access_token)
     return client
