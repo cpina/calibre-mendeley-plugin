@@ -46,7 +46,7 @@ class MendeleyDialog(QDialog):
 
     def startImport(self):
         import sys
-	sys.path.append('/home/carles/mendeley_oapi')
+	sys.path.append('/home/carles/hackday_calibre/mendeley_oapi')
 	import fetch
 
 	documents = fetch.get_mendeley_documents()

@@ -3,7 +3,7 @@
 from __future__ import (unicode_literals, division, absolute_import, print_function)
 
 __license__   = 'GPL v3'
-__copyright__ = '2012, Carles Pina'
+__copyright__ = '2012, 2013, Carles Pina'
 
 from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdit)
 
