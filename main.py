@@ -24,7 +24,7 @@ class MendeleyDialog(QDialog):
 	self.setWindowTitle('Mendeley Plugin')
 	self.setWindowIcon(icon)
 
-	self.helpl = QLabel('You will import the library:')
+	self.helpl = QLabel('Documents inside "calibre" subfolder will be imported now:')
 	self.l.addWidget(self.helpl)
 
         self.setMinimumWidth(500)
@@ -45,19 +45,11 @@ class MendeleyDialog(QDialog):
         self.db.add_books([document['path']], ['pdf'], [mi])
 
     def startImport(self):
-        print "--- startImport 01"
-        import sys
-        print "--- startImport 02"
-        print "--- startImport 03"
 	from calibre.utils.config import JSONConfig
-        print "--- startImport 04"
 	from pprint import pprint
-        print "--- startImport 05"
 
 	plugin_prefs = JSONConfig('plugins/Mendeley')
-        print "--- startImport 06"
 	pprint(plugin_prefs)
-        print "--- startImport 07"
 	from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
 
 	oapiConfig = fetch.OapiConfig()

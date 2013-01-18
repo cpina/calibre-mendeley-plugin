@@ -1,4 +1,4 @@
--Configuration for the open API keys
+-Configuration for the open API keys DONE
 -Not creating duplicates
 -Two way syncing
 -Multiple attachments
