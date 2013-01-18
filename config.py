@@ -5,7 +5,7 @@ from __future__ import (unicode_literals, division, absolute_import, print_funct
 __license__   = 'GPL v3'
 __copyright__ = '2012, 2013, Carles Pina'
 
-from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdit)
+from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout)
 
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
@@ -19,12 +19,16 @@ class ConfigWidget(QWidget):
         QWidget.__init__(self)
 	self.plugin_action = plugin_action
 
-	self.l = QVBoxLayout()
-	self.setLayout(self.l)
+	self.layout = QFormLayout()
+	self.label = QLabel()
+	self.label.setOpenExternalLinks(True)
+	self.label.setText('<a href="http://www.mendeley.com">Press Here</a>')
+	self.setLayout(self.layout)
 
 	self.api_key = QLineEdit(self)
-	self.l.addWidget(self.api_key)
 
+	self.layout.addWidget(self.label)
+	self.layout.addRow('Verification Code',self.api_key)
 	self.api_key.setText(plugin_prefs['api_key'])
 
     def save_settings(self):

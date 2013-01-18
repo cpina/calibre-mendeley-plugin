@@ -297,7 +297,6 @@ class MendeleyClientConfig:
         return True
 
     def load(self):
-        print "--------",self.filename
         loaded = json.loads(open(self.filename,'r').read())
         for key, value in loaded.items():
             setattr(self, key, value.encode("ascii"))
@@ -369,6 +368,13 @@ class MendeleyClient(object):
         request_token.set_verifier(verifier)
         access_token = self.oauth_client.access_token(request_token)
         return access_token
+    
+    def interactive_auth_url(self):
+        self.request_token, self.auth_url = self.get_auth_url()
+	return self.auth_url
+
+    def interactive_set_access_token(self, verifier):
+        self.set_access_token(self.verif_auth(self.request_token, verifier))
 
     def interactive_auth(self):
         request_token, auth_url = self.get_auth_url()
