@@ -54,19 +54,9 @@ class MendeleyDialog(QDialog):
         mendeley_id['mendeley'] = document['mendeley_id']
 
         mi.identifiers = mendeley_id
-        print("AUTHORS:")
-        print(mi.authors)
-        print(type(mi.authors))
-        print("TITLE:")
-        print(mi.title)
-        print(type(mi.title))
         mi.series_index = 1 # needed?
 
-        ids = self.db.add_books([document['path']], ['pdf'], [mi], True, True)
-        book_id = ids[1][0]  # add books returns (None, [list_of_ids])
-        print "JUST ADDED:", book_id
-
-        # self.db.set_metadata(book_id,mi,False,False,False,True,True,True)
+        self.db.add_books([document['path']], ['pdf'], [mi], False, True)
 
     def startImport(self):
         from calibre.utils.config import JSONConfig
