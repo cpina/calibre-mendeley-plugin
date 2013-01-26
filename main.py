@@ -13,61 +13,60 @@ from calibre.gui2 import Dispatcher, info_dialog
 class MendeleyDialog(QDialog):
     def __init__(self, gui, icon, do_user_config):
         QDialog.__init__(self, gui)
-	self.gui = gui
-	self.do_user_config = do_user_config
+        self.gui = gui
+        self.do_user_config = do_user_config
 
-	self.db = gui.current_db
+        self.db = gui.current_db
 
-	self.l = QVBoxLayout()
-	self.setLayout(self.l)
+        self.l = QVBoxLayout()
+        self.setLayout(self.l)
 
-	self.setWindowTitle('Mendeley Plugin')
-	self.setWindowIcon(icon)
+        self.setWindowTitle('Mendeley Plugin')
+        self.setWindowIcon(icon)
 
-	self.helpl = QLabel('Documents inside "calibre" subfolder will be imported now:')
-	self.l.addWidget(self.helpl)
+        self.helpl = QLabel('Documents inside "calibre" subfolder will be imported now:')
+        self.l.addWidget(self.helpl)
 
         self.setMinimumWidth(500)
         self.resize(self.sizeHint())
 
-	self.startImportButton = QPushButton('Start Import')
-	self.startImportButton.clicked.connect(self.startImport)
-	self.l.addWidget(self.startImportButton)
+        self.startImportButton = QPushButton('Start Import')
+        self.startImportButton.clicked.connect(self.startImport)
+        self.l.addWidget(self.startImportButton)
 
     def add_document(self,document):
-	from calibre.ebooks.metadata import MetaInformation
+        from calibre.ebooks.metadata import MetaInformation
 
-	mi = MetaInformation('', [_('Unknown')])
-	mi.title = document['title']
-	mi.authors = document['authors']
-	print("AUTHORS:")
-	print(mi.authors)
-	print(type(mi.authors))
-	print("TITLE:")
-	print(mi.title)
-	print(type(mi.title))
-	mi.series_index = 1 # needed?
+        mi = MetaInformation('', [_('Unknown')])
+        mi.title = document['title']
+        mi.authors = document['authors']
+        print("AUTHORS:")
+        print(mi.authors)
+        print(type(mi.authors))
+        print("TITLE:")
+        print(mi.title)
+        print(type(mi.title))
+        mi.series_index = 1 # needed?
 
         self.db.add_books([document['path']], ['pdf'], [mi])
 
     def startImport(self):
-	from calibre.utils.config import JSONConfig
-	from pprint import pprint
+        from calibre.utils.config import JSONConfig
+        from pprint import pprint
 
-	plugin_prefs = JSONConfig('plugins/Mendeley')
-	pprint(plugin_prefs)
-	from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
+        plugin_prefs = JSONConfig('plugins/Mendeley')
+        pprint(plugin_prefs)
+        from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
 
-	oapiConfig = fetch.OapiConfig()
-	
+        oapiConfig = fetch.OapiConfig()
+
         oapi = fetch.MendeleyOapi(oapiConfig)
-	documents = oapi.get_mendeley_documents()
+        documents = oapi.get_mendeley_documents()
 
         for document in documents:
-	    self.add_document(document)
+            self.add_document(document)
 
-	self.close()
+        self.close()
 
     def about(self):
         QMessageBox.about(self, 'About', 'Some text here')
-      

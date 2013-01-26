@@ -20,7 +20,7 @@ class MendeleyPlugin(InterfaceActionBase):
 
     def config_widget(self):
         from calibre_plugins.mendeley_to_calibre.config import ConfigWidget
-	return ConfigWidget(self.actual_plugin_)
+        return ConfigWidget(self.actual_plugin_)
 
     def save_settings(self, config_widget):
         config_widget.save_settings()
