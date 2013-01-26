@@ -62,6 +62,7 @@ class MendeleyOapi(object):
         d['title'] = document['title']
         d['authors'] = self.authorsToCalibre(document['authors'])
         d['path'] = self.downloadFile(document)
+        d['mendeley_id'] = document['id']
         return d
 
     def getDocumentsMetaInformation(self,documents):
