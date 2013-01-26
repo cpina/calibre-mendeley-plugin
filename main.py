@@ -9,6 +9,14 @@ from calibre.ebooks.conversion.config import load_defaults
 from calibre.customize.conversion import OptionRecommendation
 from calibre.ptempfile import PersistentTemporaryFile
 from calibre.gui2 import Dispatcher, info_dialog
+from calibre.gui2.threaded_jobs import ThreadedJob
+
+def do_work(abort, log, notifications):
+    from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
+    oapiConfig = fetch.OapiConfig()
+    oapi = fetch.MendeleyOapi(oapiConfig)
+    documents = oapi.get_mendeley_documents()
+    return documents
 
 class MendeleyDialog(QDialog):
     def __init__(self, gui, icon, do_user_config):
@@ -56,16 +64,35 @@ class MendeleyDialog(QDialog):
 
         plugin_prefs = JSONConfig('plugins/Mendeley')
         pprint(plugin_prefs)
-        from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
 
-        oapiConfig = fetch.OapiConfig()
+        print self
+        print self.gui
 
-        oapi = fetch.MendeleyOapi(oapiConfig)
-        documents = oapi.get_mendeley_documents()
+        job = ThreadedJob('Mendeley_importer',
+                    'Importing Mendeley Documents',
+                    func=do_work,
+                    args=(),
+                    kwargs={},
+                    callback=self.importer_finished)
 
-        for document in documents:
-            self.add_document(document)
+        #job = self.gui.job_manager.run_job(Dispatcher(self.importer_finished), 'do_work', args=(), description='Importing Mendeley to Calibre')
+        self.gui.job_manager.run_threaded_job(job)
 
+        # documents = oapi.get_mendeley_documents()
+
+        # for document in documents:
+        #    self.add_document(document)
+
+
+    def importer_finished(self,job):
+        if job.failed:
+            return self.gui.job_exception(job, dialog_title='Failed to download Mendeley documents')
+
+        else:
+            documents = job.result
+            for document in documents:
+                self.add_document(document)
+            
         self.close()
 
     def about(self):
