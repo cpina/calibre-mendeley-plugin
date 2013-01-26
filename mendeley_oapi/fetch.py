@@ -33,13 +33,11 @@ class MendeleyOapi(object):
     
         return None
     
-    def authorsToString(self,authors):
-        a = ''
+    def authorsToCalibre(self,authors):
+        a = []
     
         for author in authors:
-	    if a != '':
-	        a += " || "
-            a += author['surname'] + ', ' + author['forename']
+            a.append(author['forename'] + ' ' + author['surname'])
     
         return a
     
@@ -62,7 +60,7 @@ class MendeleyOapi(object):
         document = self.mendeley.document_details(document_id)
         d = {}
         d['title'] = document['title']
-        d['authors'] = self.authorsToString(document['authors'])
+        d['authors'] = self.authorsToCalibre(document['authors'])
         d['path'] = self.downloadFile(document)
         return d
     
