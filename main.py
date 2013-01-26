@@ -62,11 +62,8 @@ class MendeleyDialog(QDialog):
         from calibre.utils.config import JSONConfig
         from pprint import pprint
 
-        plugin_prefs = JSONConfig('plugins/Mendeley')
-        pprint(plugin_prefs)
-
-        print self
-        print self.gui
+        # plugin_prefs = JSONConfig('plugins/Mendeley')
+        # pprint(plugin_prefs)
 
         job = ThreadedJob('Mendeley_importer',
                     'Importing Mendeley Documents',
@@ -75,14 +72,7 @@ class MendeleyDialog(QDialog):
                     kwargs={},
                     callback=self.importer_finished)
 
-        #job = self.gui.job_manager.run_job(Dispatcher(self.importer_finished), 'do_work', args=(), description='Importing Mendeley to Calibre')
         self.gui.job_manager.run_threaded_job(job)
-
-        # documents = oapi.get_mendeley_documents()
-
-        # for document in documents:
-        #    self.add_document(document)
-
 
     def importer_finished(self,job):
         if job.failed:
