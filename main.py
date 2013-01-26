@@ -48,6 +48,7 @@ class MendeleyDialog(QDialog):
         mi = MetaInformation('', [_('Unknown')])
         mi.title = document['title']
         mi.authors = document['authors']
+        mi.tags = ["Mendeley"]
         print("AUTHORS:")
         print(mi.authors)
         print(type(mi.authors))
@@ -82,7 +83,6 @@ class MendeleyDialog(QDialog):
             documents = job.result
             for document in documents:
                 self.add_document(document)
-            
         self.close()
 
     def about(self):
