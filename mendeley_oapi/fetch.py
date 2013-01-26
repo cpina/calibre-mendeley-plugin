@@ -11,10 +11,14 @@ class OapiConfig:
         setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
         setattr(self,'host', 'api.mendeley.com')
 
-class MendeleyOapi(object):
-    def __init__(self, config):
+class calibreMendeleyOapi(object):
+    def __init__(self, config, calibreAbort, calibreLog, calibreNotifications):
         self.config = config
         self.mendeley = create_client(config)
+        self.calibreAbort = calibreAbort
+        self.calibreLog = calibreLog
+        self.calibreNotifications = calibreNotifications
+        self.non_documents_steps = 1
 
     def getVerificationUrl(self):
         self.mendeley = MendeleyClient(self.config.api_key, self.config.api_secret)
@@ -67,12 +71,29 @@ class MendeleyOapi(object):
 
     def getDocumentsMetaInformation(self,documents):
         documents_information = []
+
+        total_documents = documents['total_results']
+        count = 0
+
+        notification_message = 'Fetching documents'
+        self.calibreNotifications.put((1.0/(total_documents+1), notification_message))
+
         for document in documents['documents']:
+            count += 1
+            if self.calibreAbort.is_set():
+                break
+
             documents_information.append(self.getDocumentMetaInformation(document['id']))
+
+            progress_number = float(count)/(total_documents + self.non_documents_steps)
+            message = "%s, %d of %d" % (notification_message, count, total_documents)
+
+            self.calibreNotifications.put((progress_number, message))
 
         return documents_information
 
     def get_mendeley_documents(self):
+        self.calibreNotifications.put((0.0, 'Fetching initial information'))
         folders = self.mendeley.folders()
 
         folderId = self.getFolderId(folders, 'calibre')

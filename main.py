@@ -14,7 +14,7 @@ from calibre.gui2.threaded_jobs import ThreadedJob
 def do_work(abort, log, notifications):
     from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
     oapiConfig = fetch.OapiConfig()
-    oapi = fetch.MendeleyOapi(oapiConfig)
+    oapi = fetch.calibreMendeleyOapi(oapiConfig, abort, log, notifications)
     documents = oapi.get_mendeley_documents()
     return documents
 
