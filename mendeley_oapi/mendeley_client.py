@@ -30,6 +30,7 @@ import pickle
 import requests
 import sys
 import urllib
+import base64
 
 import apidefinitions
 
@@ -240,18 +241,9 @@ class MendeleyAccount:
         self.access_token = access_token
 
 class MendeleyTokensStore:
-    def __init__(self, filename='mendeley_api_keys.pkl'):
+    def __init__(self):
         print "MendeleyTokensStore __init__"
-        self.filename = filename
         self.accounts = {}
-
-        if self.filename:
-            self.load()
-
-    def __del__(self):
-        print "MendeleyTokensStore __del__"
-        if self.filename:
-            self.save()
 
     def add_account(self, key, access_token):
         print "MendeleyTokensStore add_account"
@@ -271,26 +263,18 @@ class MendeleyTokensStore:
             return
         del self.accounts[key]
 
-    def save(self):
+    def dumps(self):
         print "MendeleyTokensStore save"
-        if not self.filename:
-            raise Exception("Need to specify a filename for this store")
-	print "------- self:",self.filename
-	print self.accounts
-        pickle.dump(self.accounts, open(self.filename, 'w'))
+        return base64.encodestring(pickle.dumps(self.accounts))
 
-    def load(self):
-        print "MendeleyTokensStore load"
-        if not self.filename:
-            raise Exception("Need to specify a filename for this store")
+    def loads(self, base64Text):
+        print "MendeleyTokensStore load", base64Text
         try:
-            self.accounts = pickle.load(open(self.filename, 'r'))
-	    print "accounts:",self.accounts
+            self.accounts = pickle.loads(base64.decodestring(base64Text))
         except IOError:
             print "Can't load tokens from %s"%self.filename
 
 class MendeleyClientConfig:
-
     def __init__(self, filename='config.json'):
         self.filename = filename
         self.load()
@@ -390,17 +374,13 @@ class MendeleyClient(object):
         verifier = raw_input('Enter verification code: ')
         self.set_access_token(self.verify_auth(request_token, verifier))
 
-def create_client(config, keys_file=None, account_name="test_account"):
+def create_client(config, tokens_store, account_name="test_account"):
     # create a client and load tokens from the pkl file
     host = "api.mendeley.com"
     if hasattr(config, "host"):
         host = config.host
 
-    if not keys_file:
-        keys_file = "/tmp/keys_%s.pkl"%host
-
     client = MendeleyClient(config.api_key, config.api_secret, {"host":host})
-    tokens_store = MendeleyTokensStore(keys_file)
 
     # configure the client to use a specific token
     # if no tokens are available, prompt the user to authenticate

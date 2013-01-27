@@ -10,13 +10,20 @@ from calibre.customize.conversion import OptionRecommendation
 from calibre.ptempfile import PersistentTemporaryFile
 from calibre.gui2 import Dispatcher, info_dialog
 from calibre.gui2.threaded_jobs import ThreadedJob
+from mendeley_oapi import mendeley_client
 
 import os
 
 def do_work(abort, log, notifications):
     from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
     oapiConfig = fetch.OapiConfig()
-    oapi = fetch.calibreMendeleyOapi(oapiConfig, abort, log, notifications)
+
+    tokens_store = mendeley_client.MendeleyTokensStore()
+
+    # TODO: Check if account exists
+    tokens_store.loads(plugin_prefs['account'])
+
+    oapi = fetch.calibreMendeleyOapi(oapiConfig, tokens_store, abort, log, notifications)
     documents = oapi.get_mendeley_documents()
     return documents
 
@@ -66,8 +73,8 @@ class MendeleyDialog(QDialog):
         from calibre.utils.config import JSONConfig
         from pprint import pprint
 
-        # plugin_prefs = JSONConfig('plugins/Mendeley')
-        # pprint(plugin_prefs)
+        plugin_prefs = JSONConfig('plugins/Mendeley')
+        pprint(plugin_prefs)
 
         job = ThreadedJob('Mendeley_importer',
                     'Importing Mendeley Documents',

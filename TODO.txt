@@ -1,8 +1,10 @@
--Save MendeleyTokensStore in Calibre configuratoin
--Avoid writing to /tmp
 -Test on Windows
--Multiple attachments
+-Make the dialog to get the verification key nicer (more information, don't allow resize, etc.)
+-The dialog to "Start Download": make it nicer or remove
+-Multiple attachments?
 -More metadata
+-(DONE) Avoid writing to /tmp
+-(DONE) Save MendeleyTokensStore in Calibre configuratoin
 -(DONE) Configuration for the open API keys
 -(DONE) Not creating duplicates
 -(Not sure that I'll do) Two way syncing
