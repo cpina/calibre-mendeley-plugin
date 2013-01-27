@@ -1,5 +1,8 @@
--Configuration for the open API keys DONE
--Not creating duplicates
--Two way syncing
+-Save MendeleyTokensStore in Calibre configuratoin
+-Avoid writing to /tmp
+-Test on Windows
 -Multiple attachments
 -More metadata
+-(DONE) Configuration for the open API keys
+-(DONE) Not creating duplicates
+-(Not sure that I'll do) Two way syncing
