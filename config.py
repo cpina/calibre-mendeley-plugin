@@ -51,8 +51,8 @@ class ConfigWidget(QWidget):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
         print("SAVE SETTINGS",str(self.api_key.text()))
         plugin_prefs['verification'] = str(self.api_key.text())
-	self.oapi.setVerificationCode(str(self.api_key.text()))
-	tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
-	tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
-	tokens_store = 0 # force delete
-	print("Here")
+	    self.oapi.setVerificationCode(str(self.api_key.text()))
+	    tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
+	    tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
+	    tokens_store = 0 # force delete
+	    print("Here")
