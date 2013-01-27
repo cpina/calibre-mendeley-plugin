@@ -12,7 +12,7 @@ class OapiConfig:
         setattr(self,'host', 'api.mendeley.com')
 
 class calibreMendeleyOapi(object):
-    def __init__(self, config, calibreAbort, calibreLog, calibreNotifications):
+    def __init__(self, config, calibreAbort = None, calibreLog = None, calibreNotifications = None):
         self.config = config
         self.mendeley = create_client(config)
         self.calibreAbort = calibreAbort

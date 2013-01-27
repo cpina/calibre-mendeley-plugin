@@ -17,8 +17,8 @@ plugin_prefs = JSONConfig('plugins/Mendeley')
 class OapiConfig:
     def __init__(self):
         setattr(self,'api_key', 'c168ce62964a4900e66d9361bda9cb3a04cf98732')
-	setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
-	setattr(self,'host', 'api.mendeley.com')
+        setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
+        setattr(self,'host', 'api.mendeley.com')
 
 class ConfigWidget(QWidget):
     def __init__(self, plugin_action):
@@ -26,33 +26,33 @@ class ConfigWidget(QWidget):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
 
         QWidget.__init__(self)
-	self.plugin_action = plugin_action
+        self.plugin_action = plugin_action
 
-	self.layout = QFormLayout()
-	self.label = QLabel()
-	self.label.setOpenExternalLinks(True)
-	
-	oapiConfig = OapiConfig()
-        self.oapi = fetch.MendeleyOapi(oapiConfig)
-	self.oapi.isValid()
-	url = self.oapi.getVerificationUrl()
-	link = '<a href="%s">Press Here</a>' % (url)
+        self.layout = QFormLayout()
+        self.label = QLabel()
+        self.label.setOpenExternalLinks(True)
+        
+        oapiConfig = OapiConfig()
+        self.oapi = fetch.calibreMendeleyOapi(oapiConfig)
+        self.oapi.isValid()
+        url = self.oapi.getVerificationUrl()
+        link = '<a href="%s">Press Here</a>' % (url)
 
-	self.label.setText(link)
-	self.setLayout(self.layout)
+        self.label.setText(link)
+        self.setLayout(self.layout)
 
-	self.api_key = QLineEdit(self)
+        self.api_key = QLineEdit(self)
 
-	self.layout.addWidget(self.label)
-	self.layout.addRow('Verification Code',self.api_key)
-	self.api_key.setText(plugin_prefs['api_key'])
+        self.layout.addWidget(self.label)
+        self.layout.addRow('Verification Code',self.api_key)
+        self.api_key.setText(plugin_prefs['api_key'])
 
     def save_settings(self):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
         print("SAVE SETTINGS",str(self.api_key.text()))
         plugin_prefs['verification'] = str(self.api_key.text())
-	    self.oapi.setVerificationCode(str(self.api_key.text()))
-	    tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
-	    tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
-	    tokens_store = 0 # force delete
-	    print("Here")
+        self.oapi.setVerificationCode(str(self.api_key.text()))
+        tokens_store = mendeley_client.MendeleyTokensStore('/tmp/keys_api.mendeley.com.pkl')
+        tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
+        tokens_store = 0 # force delete
+        print("Here")
