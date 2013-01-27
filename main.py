@@ -11,6 +11,8 @@ from calibre.ptempfile import PersistentTemporaryFile
 from calibre.gui2 import Dispatcher, info_dialog
 from calibre.gui2.threaded_jobs import ThreadedJob
 
+import os
+
 def do_work(abort, log, notifications):
     from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
     oapiConfig = fetch.OapiConfig()
@@ -57,6 +59,8 @@ class MendeleyDialog(QDialog):
         mi.series_index = 1 # needed?
 
         self.db.add_books([document['path']], ['pdf'], [mi], False, True)
+
+        os.remove(document['path'])
 
     def startImport(self):
         from calibre.utils.config import JSONConfig

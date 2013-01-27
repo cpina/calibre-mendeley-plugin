@@ -2,6 +2,7 @@
 
 from pprint import pprint
 from mendeley_client import *
+import tempfile
 import os
 import sys
 
@@ -50,9 +51,9 @@ class calibreMendeleyOapi(object):
             file_hash = document['files'][0]['file_hash']
             document_id = document['id']
 
-            path = '/tmp/' + file_hash + '.pdf'
+            f=tempfile.NamedTemporaryFile(suffix='.pdf',delete=False)
+            path = f.name
             file_content = self.mendeley.download_file(document_id, file_hash)
-            f=open(path, 'w')
             f.write(file_content['data'])
             f.close()
 
