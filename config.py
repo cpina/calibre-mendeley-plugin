@@ -69,6 +69,8 @@ class ConfigWidget(QDialog):
 
         self.api_key.setText(plugin_prefs.get('api_key',''))
 
+        self.setWindowTitle('Customise Mendeley Plugin Importer')
+
     def add_ok_cancel_buttons(self):
         """ This QDialog is shown by Calibre -then it adds the Ok/Cancel
             buttons- but also by the plugin itself.
