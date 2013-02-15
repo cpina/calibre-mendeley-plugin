@@ -68,6 +68,7 @@ class MendeleyDialog(QDialog):
            
             from calibre_plugins.mendeley_to_calibre import config as ConfigWidget
             dialog = ConfigWidget.ConfigWidget('plugin_option')
+            dialog.add_ok_cancel_buttons()
             dialog.exec_()
 
 

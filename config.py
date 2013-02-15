@@ -11,10 +11,10 @@
 
 from __future__ import (division, absolute_import, print_function)
 
-__license__   = 'GPL v3'
-__copyright__ = '2012, 2013, Carles Pina'
+__license__   = 'Chocolate-ware r1'
+__copyright__ = '2012, 2013, Carles Pina Estany'
 
-from PyQt4.Qt import (Qt, QWidget, QDialog, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout)
+from PyQt4.Qt import (Qt, QWidget, QDialog, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout, QDialogButtonBox)
 
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
@@ -69,6 +69,18 @@ class ConfigWidget(QDialog):
 
         self.api_key.setText(plugin_prefs.get('api_key',''))
 
+    def add_ok_cancel_buttons(self):
+        """ This QDialog is shown by Calibre -then it adds the Ok/Cancel
+            buttons- but also by the plugin itself.
+        """
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        self.layout.addRow(button_box)
+
+        button_box.accepted.connect(self.save_settings)
+        button_box.accepted.connect(self.accept)
+
+        button_box.rejected.connect(self.reject)
+
     def save_settings(self):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
         plugin_prefs['verification'] = str(self.api_key.text())
@@ -76,3 +88,4 @@ class ConfigWidget(QDialog):
         tokens_store = mendeley_client.MendeleyTokensStore()
         tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
         plugin_prefs['account'] = tokens_store.dumps()
+        print("------ save_settings")
