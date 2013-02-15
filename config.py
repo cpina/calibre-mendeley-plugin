@@ -10,8 +10,6 @@ from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdi
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
 
-# from calibre_plugins.mendeley_to_calibre.common_utils import (get_library_uuid, KeyboardConfigDialog, PrefsViewerDialog)
-
 plugin_prefs = JSONConfig('plugins/Mendeley')
 
 class OapiConfig:
@@ -64,10 +62,8 @@ class ConfigWidget(QWidget):
 
     def save_settings(self):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
-        print("SAVE SETTINGS",str(self.api_key.text()))
         plugin_prefs['verification'] = str(self.api_key.text())
         self.oapi.setVerificationCode(str(self.api_key.text()))
         tokens_store = mendeley_client.MendeleyTokensStore()
         tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
         plugin_prefs['account'] = tokens_store.dumps()
-        print("Here")

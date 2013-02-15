@@ -35,8 +35,8 @@ class MendeleyDialog(QDialog):
 
         self.db = gui.current_db
 
-        self.l = QVBoxLayout()
-        self.setLayout(self.l)
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
 
         self.setWindowTitle('Mendeley Plugin')
         self.setWindowIcon(icon)
@@ -46,11 +46,11 @@ class MendeleyDialog(QDialog):
 
         self.startImportButton = QPushButton('Import documents from \'calibre\' Mendeley folder.')
         self.startImportButton.clicked.connect(self.startImport)
-        self.l.addWidget(self.startImportButton)
+        self.layout.addWidget(self.startImportButton)
         
         self.helpl = QLabel('\n')
         self.helpl.setWordWrap(True)
-        self.l.addWidget(self.helpl)
+        self.layout.addWidget(self.helpl)
         
     def add_document(self,document):
         from calibre.ebooks.metadata import MetaInformation
@@ -75,7 +75,6 @@ class MendeleyDialog(QDialog):
         from pprint import pprint
 
         plugin_prefs = JSONConfig('plugins/Mendeley')
-        pprint(plugin_prefs)
 
         job = ThreadedJob('Mendeley_importer',
                     'Importing Mendeley Documents',
