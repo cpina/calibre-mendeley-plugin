@@ -14,7 +14,7 @@ from __future__ import (division, absolute_import, print_function)
 __license__   = 'Chocolate-ware r1'
 __copyright__ = '2012, 2013, Carles Pina Estany'
 
-from PyQt4.Qt import (Qt, QWidget, QDialog, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout, QDialogButtonBox)
+from PyQt4.Qt import (Qt, QWidget, QDialog, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout, QDialogButtonBox, QSizePolicy, QLayout)
 
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
@@ -59,17 +59,27 @@ class ConfigWidget(QDialog):
         url = self.oapi.getVerificationUrl()
         link = '<a href="%s">Press Here</a>' % (url)
 
-        self.label.setText(link)
+        self.label.setText("""<ol>
+<li>%s</li>
+<li>Authenticate and authorize the applicatoin</li>
+<li>Copy-paste the Verification Token</li>
+<li>Press 'Ok'</li>
+</ol>
+""" % (link))
+
         self.setLayout(self.layout)
 
         self.api_key = QLineEdit(self)
 
-        self.layout.addWidget(self.label)
+        self.layout.addRow(self.label)
         self.layout.addRow('Verification Code',self.api_key)
 
         self.api_key.setText(plugin_prefs.get('api_key',''))
 
         self.setWindowTitle('Customise Mendeley Plugin Importer')
+
+        # self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
 
     def add_ok_cancel_buttons(self):
         """ This QDialog is shown by Calibre -then it adds the Ok/Cancel
@@ -90,4 +100,3 @@ class ConfigWidget(QDialog):
         tokens_store = mendeley_client.MendeleyTokensStore()
         tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
         plugin_prefs['account'] = tokens_store.dumps()
-        print("------ save_settings")

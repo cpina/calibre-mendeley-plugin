@@ -19,6 +19,7 @@ from calibre.ptempfile import PersistentTemporaryFile
 from calibre.gui2 import Dispatcher, info_dialog
 from calibre.gui2.threaded_jobs import ThreadedJob
 from mendeley_oapi import mendeley_client
+from calibre.utils.config import JSONConfig
 
 import os
 
@@ -37,8 +38,6 @@ def do_work(abort, log, notifications):
 
 class MendeleyDialog(QDialog):
     def __init__(self, gui, icon, do_user_config):
-        from calibre.utils.config import JSONConfig
-
         QDialog.__init__(self, gui)
         self.gui = gui
         self.do_user_config = do_user_config
@@ -61,11 +60,9 @@ class MendeleyDialog(QDialog):
         self.helpl = QLabel('\n')
         self.helpl.setWordWrap(True)
         self.layout.addWidget(self.helpl)
-        
-        plugin_prefs = JSONConfig('plugin/Mendeley')
+
+        plugin_prefs = JSONConfig('plugins/Mendeley')
         if not plugin_prefs.has_key('account') or not plugin_prefs.has_key('verification'):
-            print "Needs to be configured"
-           
             from calibre_plugins.mendeley_to_calibre import config as ConfigWidget
             dialog = ConfigWidget.ConfigWidget('plugin_option')
             dialog.add_ok_cancel_buttons()
