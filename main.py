@@ -9,7 +9,7 @@
 #           https://fedoraproject.org/wiki/Licensing/Beerware )
 
 from PyQt4.Qt import (QDialog, QGridLayout, QPushButton, QMessageBox, QLabel,
-    QWidget, QVBoxLayout, QLineEdit, QIcon, QDialogButtonBox, QTimer, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator)
+    QWidget, QVBoxLayout, QLineEdit, QIcon, QDialogButtonBox, QTimer, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator, QLayout)
 
 from calibre_plugins.mendeley_to_calibre.config import plugin_prefs
 from calibre.utils.config import prefs as cprefs
@@ -60,6 +60,8 @@ class MendeleyDialog(QDialog):
         self.helpl = QLabel('\n')
         self.helpl.setWordWrap(True)
         self.layout.addWidget(self.helpl)
+
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
 
         plugin_prefs = JSONConfig('plugins/Mendeley')
         if not plugin_prefs.has_key('account') or not plugin_prefs.has_key('verification'):
