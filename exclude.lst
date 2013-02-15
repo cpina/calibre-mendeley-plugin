@@ -3,3 +3,4 @@
 exclude.lst
 test.py
 test2.py
+get-plugin-version.py

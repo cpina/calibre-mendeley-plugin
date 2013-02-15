@@ -98,6 +98,8 @@ class calibreMendeleyOapi(object):
         folders = self.mendeley.folders()
 
         folderId = self.getFolderId(folders, 'calibre')
+        if folderId == None:
+            return []
 
         documents = self.mendeley.folder_documents(folderId)
         documents_information = self.getDocumentsMetaInformation(documents)

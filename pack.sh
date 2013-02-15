@@ -1,4 +1,11 @@
 #!/bin/bash
 
-rm -f mendeley.zip
-zip -r mendeley.zip * --exclude @exclude.lst
+rm *.zip 
+
+VERSION=$(./get-plugin-version.py)
+PACKAGE="mendeley-$VERSION.zip"
+
+zip -r "$PACKAGE" * --exclude @exclude.lst
+
+echo
+echo "Generated: $PACKAGE"
