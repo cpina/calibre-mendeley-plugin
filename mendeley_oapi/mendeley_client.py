@@ -242,15 +242,12 @@ class MendeleyAccount:
 
 class MendeleyTokensStore:
     def __init__(self):
-        print "MendeleyTokensStore __init__"
         self.accounts = {}
 
     def add_account(self, key, access_token):
-        print "MendeleyTokensStore add_account"
         self.accounts[key] = MendeleyAccount(access_token)
 
     def get_account(self, key):
-        print "MendeleyTokensStore get_account"
         return self.accounts.get(key, None)
 
     def get_access_token(self, key):
@@ -264,11 +261,9 @@ class MendeleyTokensStore:
         del self.accounts[key]
 
     def dumps(self):
-        print "MendeleyTokensStore save"
         return base64.encodestring(pickle.dumps(self.accounts))
 
     def loads(self, base64Text):
-        print "MendeleyTokensStore load", base64Text
         try:
             self.accounts = pickle.loads(base64.decodestring(base64Text))
         except IOError:

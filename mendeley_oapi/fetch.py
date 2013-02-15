@@ -15,9 +15,7 @@ class OapiConfig:
 class calibreMendeleyOapi(object):
     def __init__(self, config, tokens_store, calibreAbort = None, calibreLog = None, calibreNotifications = None):
         self.config = config
-        print "----------- CONFIG:",config
         self.mendeley = create_client(config,tokens_store)
-        print "-------- self.mendeley:",self.mendeley
         self.calibreAbort = calibreAbort
         self.calibreLog = calibreLog
         self.calibreNotifications = calibreNotifications

@@ -12,11 +12,9 @@ class Mendeley(InterfaceAction):
     action_spec = ('Import from Mendeley', None, 'Import from Mendeley', ())
 
     def genesis(self):
-        print 'Genesis is called'
         icon = get_icons('images/mendeley.png')
         self.qaction.setIcon(icon)
         self.qaction.triggered.connect(self.show_dialog)
-        print 'End of genesis'
 
     def show_dialog(self):
         base_plugin_object = self.interface_action_base_plugin

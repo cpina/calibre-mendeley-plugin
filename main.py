@@ -41,16 +41,17 @@ class MendeleyDialog(QDialog):
         self.setWindowTitle('Mendeley Plugin')
         self.setWindowIcon(icon)
 
-        self.helpl = QLabel('Documents inside "calibre" subfolder will be imported now:')
-        self.l.addWidget(self.helpl)
-
         self.setMinimumWidth(500)
         self.resize(self.sizeHint())
 
-        self.startImportButton = QPushButton('Start Import')
+        self.startImportButton = QPushButton('Import documents from \'calibre\' Mendeley folder.')
         self.startImportButton.clicked.connect(self.startImport)
         self.l.addWidget(self.startImportButton)
-
+        
+        self.helpl = QLabel('\n')
+        self.helpl.setWordWrap(True)
+        self.l.addWidget(self.helpl)
+        
     def add_document(self,document):
         from calibre.ebooks.metadata import MetaInformation
 
@@ -84,6 +85,9 @@ class MendeleyDialog(QDialog):
                     callback=self.importer_finished)
 
         self.gui.job_manager.run_threaded_job(job)
+
+        self.startImportButton.setEnabled(False)
+        self.helpl.setText('Importing documents. You can close the dialog. See the progress in the Calibre jobs (see the Status Bar).')
 
     def importer_finished(self,job):
         if job.failed:
