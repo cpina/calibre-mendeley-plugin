@@ -5,7 +5,7 @@ from calibre.customize import InterfaceActionBase
 class MendeleyPlugin(InterfaceActionBase):
     name = 'Mendeley Plugin Importer'
     description = 'Imports your Mendeley library into Calibre'
-    supported_platforms = ['linux'] # not tested on Windows and osx
+    supported_platforms = ['linux', 'windows', 'osx']
     author = 'Carles Pina'
     version = (1, 0, 0)
     minimum_calibre_version = (0, 9, 0) # not tested with previous ones
