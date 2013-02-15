@@ -43,6 +43,8 @@ class ConfigWidget(QDialog):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
 
+        self.information_label = None
+
         QWidget.__init__(self)
         self.plugin_action = plugin_action
 
@@ -74,11 +76,12 @@ class ConfigWidget(QDialog):
         self.layout.addRow(self.label)
         self.layout.addRow('Verification Code',self.api_key)
 
+        self.api_key.textChanged.connect(self.clean_information)
+
         self.api_key.setText(plugin_prefs.get('api_key',''))
 
         self.setWindowTitle('Customise Mendeley Plugin Importer')
 
-        # self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
 
     def add_ok_cancel_buttons(self):
@@ -88,15 +91,35 @@ class ConfigWidget(QDialog):
         button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         self.layout.addRow(button_box)
 
-        button_box.accepted.connect(self.save_settings)
-        button_box.accepted.connect(self.accept)
-
+        button_box.accepted.connect(self.ok_pressed)
         button_box.rejected.connect(self.reject)
 
+    def ok_pressed(self):
+        if self.save_settings():
+            self.accept()
+        else:
+            if self.information_label == None:
+                self.information_label = QLabel()
+                self.layout.addRow(self.information_label)
+
+            self.information_label.setText('<font color="red">Invalid verification code</font>')
+
+    def clean_information(self):
+        if self.information_label:
+            self.information_label.setText('')
+
     def save_settings(self):
+        ok_api_key = True
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
         plugin_prefs['verification'] = str(self.api_key.text())
-        self.oapi.setVerificationCode(str(self.api_key.text()))
-        tokens_store = mendeley_client.MendeleyTokensStore()
-        tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
-        plugin_prefs['account'] = tokens_store.dumps()
+        try:
+            self.oapi.setVerificationCode(str(self.api_key.text()))
+        except ValueError:
+            ok_api_key = False
+
+        if ok_api_key:
+            tokens_store = mendeley_client.MendeleyTokensStore()
+            tokens_store.add_account('test_account',self.oapi.mendeley.get_access_token())
+            plugin_prefs['account'] = tokens_store.dumps()
+
+        return ok_api_key
