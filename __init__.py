@@ -1,5 +1,12 @@
-import os
+# "THE CHOCOLATE-WARE LICENSE" (Revision 1):
+# <carles@pina.cat> wrote this file. As long as you retain
+# this notice you can do whatever you want with this stuff. If we meet some
+# day, and you think this stuff is worth it, you can buy me a chocolate in
+# return.
+# (license based in Beer-ware, see
+#           https://fedoraproject.org/wiki/Licensing/Beerware )
 
+import os
 from calibre.customize import InterfaceActionBase
 
 class MendeleyPlugin(InterfaceActionBase):

@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 
-__license__   = 'GPL v3'
-__copyright__ = '2012, Carles Pina'
+# "THE CHOCOLATE-WARE LICENSE" (Revision 1):
+# <carles@pina.cat> wrote this file. As long as you retain
+# this notice you can do whatever you want with this stuff. If we meet some
+# day, and you think this stuff is worth it, you can buy me a chocolate in
+# return.
+# (license based in Beer-ware, see
+#           https://fedoraproject.org/wiki/Licensing/Beerware )
+
+__license__   = 'ChocolateWare r1'
+__copyright__ = '2012, 2013, Carles Pina Estany'
 
 from calibre.gui2.actions import InterfaceAction
 from calibre_plugins.mendeley_to_calibre.main import MendeleyDialog
