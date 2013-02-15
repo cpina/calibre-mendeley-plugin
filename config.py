@@ -14,7 +14,7 @@ from __future__ import (division, absolute_import, print_function)
 __license__   = 'GPL v3'
 __copyright__ = '2012, 2013, Carles Pina'
 
-from PyQt4.Qt import (Qt, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout)
+from PyQt4.Qt import (Qt, QWidget, QDialog, QVBoxLayout, QCheckBox, QPushButton, QLineEdit, QLabel, QFormLayout)
 
 from calibre.gui2 import dynamic, info_dialog
 from calibre.utils.config import JSONConfig
@@ -38,7 +38,7 @@ class OapiConfig:
 
         setattr(self,'host', 'api.mendeley.com')
 
-class ConfigWidget(QWidget):
+class ConfigWidget(QDialog):
     def __init__(self, plugin_action):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import fetch
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client
@@ -49,7 +49,7 @@ class ConfigWidget(QWidget):
         self.layout = QFormLayout()
         self.label = QLabel()
         self.label.setOpenExternalLinks(True)
-        
+
         oapiConfig = OapiConfig()
         tokens_store = mendeley_client.MendeleyTokensStore()
         # tokens_store.loads(plugin_prefs['account'])

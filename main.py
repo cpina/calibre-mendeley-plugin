@@ -37,6 +37,8 @@ def do_work(abort, log, notifications):
 
 class MendeleyDialog(QDialog):
     def __init__(self, gui, icon, do_user_config):
+        from calibre.utils.config import JSONConfig
+
         QDialog.__init__(self, gui)
         self.gui = gui
         self.do_user_config = do_user_config
@@ -55,11 +57,20 @@ class MendeleyDialog(QDialog):
         self.startImportButton = QPushButton('Import documents from \'calibre\' Mendeley folder.')
         self.startImportButton.clicked.connect(self.startImport)
         self.layout.addWidget(self.startImportButton)
-        
+
         self.helpl = QLabel('\n')
         self.helpl.setWordWrap(True)
         self.layout.addWidget(self.helpl)
         
+        plugin_prefs = JSONConfig('plugin/Mendeley')
+        if not plugin_prefs.has_key('account') or not plugin_prefs.has_key('verification'):
+            print "Needs to be configured"
+           
+            from calibre_plugins.mendeley_to_calibre import config as ConfigWidget
+            dialog = ConfigWidget.ConfigWidget('plugin_option')
+            dialog.exec_()
+
+
     def add_document(self,document):
         from calibre.ebooks.metadata import MetaInformation
 
@@ -79,7 +90,6 @@ class MendeleyDialog(QDialog):
         os.remove(document['path'])
 
     def startImport(self):
-        from calibre.utils.config import JSONConfig
         from pprint import pprint
 
         plugin_prefs = JSONConfig('plugins/Mendeley')

@@ -213,7 +213,6 @@ class Token(object):
         if not len(s):
             raise ValueError("Invalid parameter string.")
 
-        print "******* from_string:",s
         params = parse_qs(s, keep_blank_values=False)
         if not len(params):
             raise ValueError("Invalid parameter string.")
