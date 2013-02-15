@@ -44,7 +44,10 @@ class ConfigWidget(QWidget):
         self.label.setOpenExternalLinks(True)
         
         oapiConfig = OapiConfig()
-        self.oapi = fetch.calibreMendeleyOapi(oapiConfig)
+        tokens_store = mendeley_client.MendeleyTokensStore()
+        # tokens_store.loads(plugin_prefs['account'])
+
+        self.oapi = fetch.calibreMendeleyOapi(oapiConfig, tokens_store)
         self.oapi.isValid()
         url = self.oapi.getVerificationUrl()
         link = '<a href="%s">Press Here</a>' % (url)
@@ -56,7 +59,8 @@ class ConfigWidget(QWidget):
 
         self.layout.addWidget(self.label)
         self.layout.addRow('Verification Code',self.api_key)
-        self.api_key.setText(plugin_prefs['api_key'])
+
+        self.api_key.setText(plugin_prefs.get('api_key',''))
 
     def save_settings(self):
         from calibre_plugins.mendeley_to_calibre.mendeley_oapi import mendeley_client

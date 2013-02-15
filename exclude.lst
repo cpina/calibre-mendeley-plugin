@@ -1,0 +1,5 @@
+.git
+*.pyc
+exclude.lst
+test.py
+test2.py
