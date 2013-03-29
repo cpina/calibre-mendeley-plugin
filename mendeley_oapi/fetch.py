@@ -8,6 +8,9 @@ import sys
 
 class OapiConfig:
     def __init__(self):
+        # You can get other ones from http://dev.mendeley.com
+        # This is called 'secret' but it's not a secret, obviously.
+        # OAuth1 procedure :-)
         setattr(self,'api_key', 'c168ce62964a4900e66d9361bda9cb3a04cf98732')
         setattr(self,'api_secret', '7d4294168e43807651faf051510c707b')
         setattr(self,'host', 'api.mendeley.com')
