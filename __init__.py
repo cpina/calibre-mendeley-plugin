@@ -14,7 +14,7 @@ class MendeleyPlugin(InterfaceActionBase):
     description = 'Imports your Mendeley library into Calibre'
     supported_platforms = ['linux', 'windows', 'osx']
     author = 'Carles Pina'
-    version = (0, 0, 2)
+    version = (0, 0, 3)
     minimum_calibre_version = (0, 9, 0) # not tested with previous ones
 
     #: This field defines the GUI plugin class that contains all the code
