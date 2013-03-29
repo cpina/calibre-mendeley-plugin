@@ -31,9 +31,9 @@ class calibreMendeleyOapi(object):
     def isValid(self):
         return self.mendeley != None
 
-    def getFolderId(self,folders, name):
+    def getFolderIdNoCaseSensitive(self,folders, name):
         for folder in folders:
-            if folder['name'] == name:
+            if folder['name'].lower() == name.lower():
                 return folder['id']
 
         return None
@@ -47,7 +47,7 @@ class calibreMendeleyOapi(object):
         return a
 
     def downloadFile(self,document):
-        if document.has_key('files'):
+        if document.has_key('files') and len(document['files']) > 0:
             file_hash = document['files'][0]['file_hash']
             document_id = document['id']
 
@@ -59,7 +59,7 @@ class calibreMendeleyOapi(object):
 
             return path
 
-        return ''
+        return None
 
     def getDocumentMetaInformation(self,document_id):
         document = self.mendeley.document_details(document_id)
@@ -84,12 +84,14 @@ class calibreMendeleyOapi(object):
             if self.calibreAbort.is_set():
                 break
 
-            documents_information.append(self.getDocumentMetaInformation(document['id']))
+            documentMetaInformation = self.getDocumentMetaInformation(document['id'])
+            if documentMetaInformation['path'] != None:
+                documents_information.append(self.getDocumentMetaInformation(document['id']))
 
-            progress_number = float(count)/(total_documents + self.non_documents_steps)
-            message = "%s, %d of %d" % (notification_message, count, total_documents)
+                progress_number = float(count)/(total_documents + self.non_documents_steps)
+                message = "%s, %d of %d" % (notification_message, count, total_documents)
 
-            self.calibreNotifications.put((progress_number, message))
+                self.calibreNotifications.put((progress_number, message))
 
         return documents_information
 
@@ -97,7 +99,7 @@ class calibreMendeleyOapi(object):
         self.calibreNotifications.put((0.0, 'Fetching initial information'))
         folders = self.mendeley.folders()
 
-        folderId = self.getFolderId(folders, 'calibre')
+        folderId = self.getFolderIdNoCaseSensitive(folders, 'calibre')
         if folderId == None:
             return []
 
