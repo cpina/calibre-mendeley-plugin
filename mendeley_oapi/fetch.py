@@ -106,7 +106,13 @@ class calibreMendeleyOapi(object):
         if folderId == None:
             return []
 
-        documents = self.mendeley.folder_documents(folderId)
+        # fetch_items = 99999999 number of documents to fetch from the OAPI.
+        # OAPI should have "all" but by default returns 20 (!). Mendeley
+        # will probably change it.
+        # 99999999 is more documents than Mendeley Desktop can handle, so
+        # using it for now :-)
+        fetch_items = 99999999
+        documents = self.mendeley.folder_documents(folderId, items=fetch_items)
         documents_information = self.getDocumentsMetaInformation(documents)
 
         return documents_information
