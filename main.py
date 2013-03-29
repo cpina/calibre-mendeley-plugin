@@ -9,7 +9,9 @@
 #           https://fedoraproject.org/wiki/Licensing/Beerware )
 
 from PyQt4.Qt import (QDialog, QGridLayout, QPushButton, QMessageBox, QLabel,
-    QWidget, QVBoxLayout, QLineEdit, QIcon, QDialogButtonBox, QTimer, QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator, QLayout)
+    QWidget, QVBoxLayout, QLineEdit, QIcon, QDialogButtonBox, QTimer,
+    QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator, QLayout,
+    pyqtSignal, Qt)
 
 from calibre_plugins.mendeley_to_calibre.config import plugin_prefs
 from calibre.utils.config import prefs as cprefs
@@ -37,6 +39,7 @@ def do_work(abort, log, notifications):
     return documents
 
 class MendeleyDialog(QDialog):
+    showErrorSignal = pyqtSignal(object, object)
     def __init__(self, gui, icon, do_user_config):
         QDialog.__init__(self, gui)
         self.gui = gui
@@ -70,6 +73,7 @@ class MendeleyDialog(QDialog):
             dialog.add_ok_cancel_buttons()
             dialog.exec_()
 
+        self.showErrorSignal.connect(self.show_dialog, type=Qt.QueuedConnection)
 
     def add_document(self,document):
         from calibre.ebooks.metadata import MetaInformation
@@ -88,6 +92,11 @@ class MendeleyDialog(QDialog):
         self.db.add_books([document['path']], ['pdf'], [mi], False, True)
 
         os.remove(document['path'])
+
+
+    def show_dialog(self, title, body):
+        self.close()
+        QMessageBox.warning(self, title, body)
 
     def startImport(self):
         from pprint import pprint
@@ -112,6 +121,10 @@ class MendeleyDialog(QDialog):
 
         else:
             documents = job.result
+            if documents == []:
+                self.showErrorSignal.emit('No documents found', "Mendeley 'calibre' folder not found or it's empty. The plugin only fetches documents from the folder called 'calibre' (or 'Calibre') from Mendeley.\n\nReminder: you need to press Sync in Mendeley Desktop after adding documents there.")
+                return
+
             for document in documents:
                 self.add_document(document)
         self.close()
